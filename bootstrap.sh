@@ -10,9 +10,7 @@ set -eu
 cat <<RUBY > /etc/buildkite-agent/check_command_whitelist.rb
 require "yaml"
 
-KNOWN_REPOSITORIES = [
-  "git@bitbucket.org:panoramaed/rainbow-backend.git"
-]
+KNOWN_REPOSITORY_PREFIX = "git@bitbucket.org:panoramaed/"
 
 # This command allows us to upload and process the pipeline file from our
 # repositories
@@ -20,11 +18,10 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ]
 
-unless KNOWN_REPOSITORIES.include?(ENV["BUILDKITE_REPO"])
+unless ENV["BUILDKITE_REPO"].start_with?(KNOWN_REPOSITORY_PREFIX)
   puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
        "to this buildkite instance. If you actually need to use this repo " \
-       "please add it to the allowed repositories inside of the agent " \
-       "bootstrapping script."
+       "please modify the agent bootstrapping script to allow cloning it. "
 
   exit 4
 end
@@ -46,7 +43,6 @@ allowed_commands = pipeline["steps"].map { |step| step["command"] }.compact +
                    DEFAULT_ALLOWED_COMMANDS
 
 if allowed_commands.include?(ENV["BUILDKITE_COMMAND"])
-  puts "The given command is whitelisted and can be run"
   exit 0
 else
   puts "The given command is not in the 'buildkite/pipeline.yml' file " \
