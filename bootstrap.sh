@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+## Make sure we'll use ruby 2.3
+sudo yum install -y ruby23
+
 #############################################################################
 # Write out a ruby script to ensure:
 # 1) that buildkite only clones from a whitelisted set of Panorama repositories
@@ -38,17 +41,34 @@ unless File.exists?(pipeline_path)
   exit 1
 end
 
-pipeline = YAML.load(File.read(pipeline_path))
-allowed_commands = pipeline["steps"].map { |step| step["command"] }.compact +
-                   DEFAULT_ALLOWED_COMMANDS
+yaml_content = File.read(pipeline_path)
+begin
+  pipeline = YAML.safe_load(yaml_content)
+  allowed_commands = pipeline["steps"].
+                     map { |step| step["command"] }.
+                     flatten.
+                     compact.
+                     uniq + DEFAULT_ALLOWED_COMMANDS
 
-if allowed_commands.include?(ENV["BUILDKITE_COMMAND"])
-  exit 0
-else
-  puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-       "and therefore will not be run. Please add it to the whitelist if it " \
-       "should be allowed."
-  exit 2
+  if allowed_commands.include?(ENV["BUILDKITE_COMMAND"])
+    exit 0
+  else
+    puts "The given command is not in the 'buildkite/pipeline.yml' file " \
+         "and therefore will not be run. Please add it to the whitelist if it " \
+         "should be allowed."
+    exit 2
+  end
+rescue Psych::SyntaxError => e
+  puts "Failed to parse #{pipeline_path}"
+  puts "Error message: #{e.message}"
+  puts "You have an error on line #{e.line}, this is your file:"
+  yaml_content.
+    split("\n").
+    each_with_index.
+    each do |line, line_number|
+      puts "#{line_number + 1}: #{line}"
+    end
+  exit 3
 end
 RUBY
 
@@ -58,7 +78,7 @@ RUBY
 # the whole pipeline is aborted.
 #############################################################################
 cat <<EOF >> /etc/buildkite-agent/hooks/pre-command
-if ! ruby /etc/buildkite-agent/check_command_whitelist.rb; then
+if ! ruby2.3 /etc/buildkite-agent/check_command_whitelist.rb; then
   exit 1
 fi
 EOF
