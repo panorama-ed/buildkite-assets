@@ -50,14 +50,16 @@ begin
                      compact.
                      uniq + DEFAULT_ALLOWED_COMMANDS
 
-  if allowed_commands.include?(ENV["BUILDKITE_COMMAND"])
-    exit 0
-  else
-    puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-         "and therefore will not be run. Please add it to the whitelist if it " \
-         "should be allowed."
-    exit 2
+  ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
+    unless allowed_commands.include?(command)
+      puts "The given command is not in the 'buildkite/pipeline.yml' file " \
+           "and therefore will not be run. Please add it to the whitelist if it " \
+           "should be allowed."
+      exit 2
+    end
   end
+
+  exit 0
 rescue Psych::SyntaxError => e
   puts "Failed to parse #{pipeline_path}"
   puts "Error message: #{e.message}"
