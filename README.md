@@ -28,3 +28,22 @@ script when they start.
    executed. Coupled with repository whitelisting, this makes it so that only
    commands committed to Panorama repos will be executed.
 
+# Testing
+
+## Pre-hook Ruby script
+
+To test the changes in the pre-hook ruby script embedded in `bootstrap.sh` you
+can use the setup in the `test` folder. There's an `init.rb` script that will
+automatically extract and simulate a Buildkite run of the pre-hook ruby script.
+
+First step is to cd into `test` and run `ruby init.rb`. That will create a
+`test-repo` subfolder with a sample pipeline file and a `buildkite_command.sh`
+that simulates the command Buildkite would run.
+
+If you have a Buildkite build that you want to test, you can find the command in
+the `Environment` tab if you search for the `BUILDKITE_COMMAND` variable.
+
+With everything setup, just cd into the `test` directory and run `ruby init.rb`.
+Check the results, update `bootstrap.sh` and try again. The `pre-hook.rb` file
+will be overwritten every time you run `init.rb`. Changes should be made in the
+`bootstrap.sh` file.
