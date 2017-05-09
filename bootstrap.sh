@@ -4,75 +4,17 @@ set -eu
 ## Make sure we'll use ruby 2.3
 sudo yum install -y ruby23
 
-#############################################################################
-# Write out a ruby script to ensure:
-# 1) that buildkite only clones from a whitelisted set of Panorama repositories
-# 2) that buildkite can only run commands that have been white listed from
-#    within one of those repositories
-#############################################################################
-cat <<RUBY > /etc/buildkite-agent/check_command_whitelist.rb
-require "yaml"
+## Clone buildkite-assets
+git clone https://bitbucket.org/panoramaed/buildkite-assets.git
 
-KNOWN_REPOSITORY_PREFIX = "git@bitbucket.org:panoramaed/"
+## Go into the cloned repository directory
+cd buildkite-assets
 
-# This command allows us to upload and process the pipeline file from our
-# repositories
-DEFAULT_ALLOWED_COMMANDS = [
-  "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
-]
+## Copy the script to be used in pre-command
+cp check_command_whitelist.rb /etc/buildkite-agent
 
-unless ENV["BUILDKITE_REPO"].start_with?(KNOWN_REPOSITORY_PREFIX)
-  puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
-       "to this buildkite instance. If you actually need to use this repo " \
-       "please modify the agent bootstrapping script to allow cloning it. "
-
-  exit 4
-end
-
-pipeline_path = File.join(
-  ENV["BUILDKITE_BUILD_CHECKOUT_PATH"],
-  "buildkite",
-  "pipeline.yml"
-)
-
-unless File.exists?(pipeline_path)
-  puts "The repository needs to have a 'buildkite/pipeline.yml' file " \
-       "that specifies the commands allowed to run on the buildkite server!"
-  exit 1
-end
-
-yaml_content = File.read(pipeline_path)
-begin
-  pipeline = YAML.safe_load(yaml_content)
-  allowed_commands = pipeline["steps"].
-                     map { |step| step["command"] }.
-                     flatten.
-                     compact.
-                     uniq + DEFAULT_ALLOWED_COMMANDS
-
-  ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
-    unless allowed_commands.include?(command)
-      puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-           "and therefore will not be run. Please add it to the whitelist if it " \
-           "should be allowed."
-      exit 2
-    end
-  end
-
-  exit 0
-rescue Psych::SyntaxError => e
-  puts "Failed to parse #{pipeline_path}"
-  puts "Error message: #{e.message}"
-  puts "You have an error on line #{e.line}, this is your file:"
-  yaml_content.
-    split("\n").
-    each_with_index.
-    each do |line, line_number|
-      puts "#{line_number + 1}: #{line}"
-    end
-  exit 3
-end
-RUBY
+## Copy deploy scripts
+cp -R deploy/* /usr/local/bin
 
 #############################################################################
 # Extend the pre-command hook to run the safety script before running any
