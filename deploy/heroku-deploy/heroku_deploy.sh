@@ -20,7 +20,6 @@ chmod 600 ~/.netrc
 heroku
 
 cd app/
-git remote rm heroku
 heroku git:remote --app $DEPLOYMENT_APP_NAME
 
 # run whatever commands come in
