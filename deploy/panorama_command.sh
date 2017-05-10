@@ -24,7 +24,8 @@ fi
 # build it
 docker build \
   --build-arg buildkite_agent_uid=$UID \
-  -t heroku-deploy-img heroku-deploy/
+  -t heroku-deploy-img \
+  /usr/local/bin/heroku-deploy/
 
 echo "Running command: $command"
 
