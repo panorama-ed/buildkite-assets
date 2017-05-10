@@ -26,4 +26,6 @@ heroku git:remote --app $DEPLOYMENT_APP_NAME
 # run whatever commands come in
 if [ -n "$1" ]; then
   bash -c "$*"
+else
+  echo "-- NO COMMAND PASSED IN --"
 fi
