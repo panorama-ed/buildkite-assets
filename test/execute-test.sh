@@ -12,7 +12,7 @@ echo "$BUILDKITE_COMMAND"
 echo "-------------------------"
 echo
 echo "--- Starting pre-hook script ---"
-ruby pre-hook.rb
+ruby ../../check_command_whitelist.rb
 export EXIT_STATUS=$?
 echo "--------------------------------"
 echo
