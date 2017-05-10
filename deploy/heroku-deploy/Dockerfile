@@ -12,5 +12,5 @@ RUN useradd -u $buildkite_agent_uid -m panorama
 USER panorama
 WORKDIR /home/panorama
 
-ADD heroku_deploy/heroku_deploy.sh .
+ADD heroku_deploy.sh .
 ENTRYPOINT ["./heroku_deploy.sh"]
