@@ -1,6 +1,5 @@
 #! /bin/bash
 set -e
-set -x
 
 # we need a .netrc file for the toolbelt to use
 cat >> ~/.netrc <<NETRC
