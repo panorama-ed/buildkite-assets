@@ -30,19 +30,12 @@ script when they start.
 
 # Testing
 
-## Pre-hook Ruby script
+## Pre-command hook Ruby script
 
-To test the changes in the pre-command hook ruby script that gets called before
-each command in Buildkite (`check_command_whitelist.rb`), you can use the test
-harness inside the `test` folder. There's an `init.rb` script that will simulate
-a Buildkite run of the pre-command hook ruby script.
+If you change the `check_command_whitelist.rb` file, you can test that your
+changes worked by running the test suite locally. To do that just call the
+script `buildkite/run_check_command_whitelist_tests.sh`, like the following:
 
-First step is to cd into `test` and run `ruby init.rb`. That will create a
-`test-repo` subfolder with a sample pipeline file and a `buildkite_command.sh`
-that simulates the command Buildkite would run.
-
-If you have a Buildkite build that you want to test, you can find the command in
-the `Environment` tab, searching for the `BUILDKITE_COMMAND` variable.
-
-With everything setup, just cd into the `test` directory and run `ruby init.rb`.
-Check the results, update `check_command_whitelist.rb` and try again.
+```bash
+$ ./buildkite/run_check_command_whitelist_tests.sh
+```
