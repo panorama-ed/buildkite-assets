@@ -9,6 +9,11 @@ RUN (mkdir -p /usr/local/lib && cd /usr/local/lib && curl https://cli-assets.her
 # We pass it in as a buildarg so we can use the $UID environment variable
 ARG buildkite_agent_uid
 RUN useradd -u $buildkite_agent_uid -m panorama
+
+# Make the platform API gem available to ruby scripts run inside the container.
+# Useful for scripting things like environment variable updates
+RUN gem install platform-api --no-rdoc --no-ri --version "2.1.0"
+
 USER panorama
 WORKDIR /home/panorama
 

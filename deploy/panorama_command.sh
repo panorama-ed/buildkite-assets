@@ -16,11 +16,17 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+# The default path is the location where the heroku-deploy folder lives
+# on the Buildkite agent. For local testing, it's sometime helpful to have
+# this available as an environment variable (you can set it to where
+# heroku-deploy lives on your local machine, so that the scripts will run)
+export HEROKU_DEPLOY_PATH=${HEROKU_DEPLOY_PATH:=/usr/local/bin/heroku-deploy}
+
 # Build docker image
 docker build \
   --build-arg buildkite_agent_uid=$UID \
   -t heroku-deploy-img \
-  /usr/local/bin/heroku-deploy/
+  $HEROKU_DEPLOY_PATH
 
 command=""
 
