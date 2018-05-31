@@ -2,6 +2,7 @@ require "fileutils"
 require "open3"
 require "rspec"
 require "tempfile"
+require "pathname"
 
 RSpec.describe "Pre-command Hook" do
 

@@ -48,5 +48,6 @@ docker run \
   -e HEROKU_DEPLOYMENT_API_KEY \
   -e BUILDKITE_COMMIT \
   -v `pwd`:/home/panorama/app \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -it heroku-deploy-img \
   $command

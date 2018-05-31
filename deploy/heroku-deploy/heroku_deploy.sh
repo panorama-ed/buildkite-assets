@@ -16,7 +16,7 @@ chmod 600 ~/.netrc
 # update heroku toolbelt to the latest version
 # NOTE: This has to happen after the netrc has been written, otherwise
 # this would happen in the Dockerfile at build time.
-heroku
+heroku update
 
 cd app/
 heroku git:remote --app $DEPLOYMENT_APP_NAME
