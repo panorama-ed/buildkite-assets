@@ -1,6 +1,6 @@
 FROM heroku/cedar:14
 
-# Install Docker client, which is used by Heroky CLI for container release
+# Install Docker client, which is used by Heroku CLI for container release
 # see installation instructions: https://docs.docker.com/install/linux/docker-ce/binaries/
 ENV DOCKERVERSION=18.03.1-ce
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
