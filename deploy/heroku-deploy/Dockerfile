@@ -2,8 +2,6 @@ FROM heroku/cedar:14
 
 # Install Docker client, which is used by Heroky CLI for container release
 # see installation instructions: https://docs.docker.com/install/linux/docker-ce/binaries/
-# in order for this to work as expected, the docker daemon must be mounted when
-# running this image
 ENV DOCKERVERSION=18.03.1-ce
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
   && mv docker-${DOCKERVERSION}.tgz docker.tgz \
