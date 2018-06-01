@@ -33,6 +33,7 @@ docker run \
   -e BUILDKITE_COMMIT
   -e UID
   -v `pwd`:/home/panorama/app \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -it heroku-deploy-img
 ```
 

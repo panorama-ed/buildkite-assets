@@ -42,11 +42,14 @@ elif [ $1 = "custom" ]; then
 fi
 
 # run it
+# in order for docker to work as expected, the docker daemon must be mounted
+# when running the image
 docker run \
   -e DEPLOYMENT_APP_NAME \
   -e HEROKU_DEPLOYMENT_LOGIN \
   -e HEROKU_DEPLOYMENT_API_KEY \
   -e BUILDKITE_COMMIT \
   -v `pwd`:/home/panorama/app \
+  -v /var/run/docker.sock:/var/run/docker.sock \
   -it heroku-deploy-img \
   $command
