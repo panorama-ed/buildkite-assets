@@ -10,6 +10,9 @@ git clone https://bitbucket.org/panoramaed/buildkite-assets.git
 ## Go into the cloned repository directory
 cd buildkite-assets
 
+## TEMPORARY! DELETEME
+git checkout feature/SEC-287-githubbard
+
 ## Copy the script to be used in pre-command
 cp check_command_whitelist.rb /etc/buildkite-agent
 
