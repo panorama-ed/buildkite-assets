@@ -41,8 +41,19 @@ EOF
 #############################################################################
 AGENT_HOME=`getent passwd buildkite-agent | cut -d: -f6`
 mkdir -p $AGENT_HOME/.ssh
-cat <<BITBUCKET_KNOWN_HOST > $AGENT_HOME/.ssh/known_hosts
+cat <<KNOWN_HOSTS > $AGENT_HOME/.ssh/known_hosts
+# The Bitbucket public key is taken from:
+# https://confluence.atlassian.com/bitbucket/troubleshoot-ssh-issues-271943403.html#TroubleshootSSHissues-Troubleshooterrormessages
 bitbucket.org,104.192.143.1 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
-BITBUCKET_KNOWN_HOST
+
+# The GitHub public key is obtained by running `ssh -T git@github.com`,
+# confirming that the fingerprint matches GitHub's published fingerprint
+# (see: https://help.github.com/articles/github-s-ssh-key-fingerprints/),
+# and then pulling the added line out of the local `known_hosts` file. We do
+# not specify a given IP address for GitHub because GitHub uses many IP
+# addresses and regularly changes them
+# (see: https://help.github.com/articles/about-github-s-ip-addresses/).
+github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
+KNOWN_HOSTS
 chown buildkite-agent: $AGENT_HOME/.ssh
 chown buildkite-agent: $AGENT_HOME/.ssh/known_hosts
