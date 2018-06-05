@@ -7,7 +7,10 @@
 
 require "yaml"
 
-KNOWN_REPOSITORY_PREFIX = "git@bitbucket.org:panoramaed/"
+KNOWN_REPOSITORY_PREFIXES = [
+  "git@bitbucket.org:panoramaed/",
+  "git@github.com:panorama-ed/"
+].freeze
 
 # This command allows us to upload and process the pipeline file from our
 # repositories
@@ -15,7 +18,9 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ]
 
-unless ENV["BUILDKITE_REPO"].start_with?(KNOWN_REPOSITORY_PREFIX)
+unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
+  ENV["BUILDKITE_REPO"].start_with?(prefix)
+end
   puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
        "to this buildkite instance. If you actually need to use this repo " \
        "please modify the agent bootstrapping script to allow cloning it. "
