@@ -11,9 +11,9 @@ script when they start.
 1. **SSH Fingerprint verification** By default, when Buildkite checks out a git
    repository it automatically accept any SSH fingerprint without verifying its
    authenticity. This leaves the agent vulnerable to man-in-the-middle-attacks
-   in which another server could pretend to be bitbucket and provide the build
+   in which another server could pretend to be github and provide the build
    agent with hostile code to execute. To prevent this the bootstrapping script
-   disables automatic fingerprint verification and installs bitbucket's
+   disables automatic fingerprint verification and installs github's
    authentic fingerprint (pulled from their documentation). Since this is the
    only git provider we expect to access, there is no need to allow any other
    fingerprints.

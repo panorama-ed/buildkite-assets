@@ -7,7 +7,7 @@
 
 require "yaml"
 
-KNOWN_REPOSITORY_PREFIX = "git@bitbucket.org:panoramaed/"
+KNOWN_REPOSITORY_PREFIX = "git@github.com:panorama-ed/"
 
 # This command allows us to upload and process the pipeline file from our
 # repositories

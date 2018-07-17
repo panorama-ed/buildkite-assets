@@ -40,7 +40,7 @@ RSpec.describe "Pre-command Hook" do
     }
   end
 
-  let(:repo) { "git@bitbucket.org:panoramaed/forklift.git" }
+  let(:repo) { "git@github.com:panorama-ed/forklift.git" }
   let(:repo_path) { Dir.mktmpdir }
   let(:command) { "echo Hello World!" }
   let(:buildkite_command) { command }
@@ -75,7 +75,7 @@ RSpec.describe "Pre-command Hook" do
       end
 
       context "when the repository is not allowed" do
-        let(:repo) { "git@bitbucket.org:somehwere_malicious/rainbow.git" }
+        let(:repo) { "git@github.com:somehwere_malicious/rainbow.git" }
 
         it "fails with a reasonable message" do
           expect(subject[:status]).to eq(4), "Expected script to fail"
