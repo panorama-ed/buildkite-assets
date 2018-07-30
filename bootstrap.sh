@@ -46,7 +46,7 @@ BITBUCKET_SSH_KEY=AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/V
 
 for iprange in 18.205.93. 13.52.5.; do
 	for suffix in {0..127}; do
-		echo "$iprange$suffix ssh-rsa $BITBUCKET_SSH_KEY" > $AGENT_HOME/.ssh/known_hosts
+		echo "bitbucket.org,$iprange$suffix ssh-rsa $BITBUCKET_SSH_KEY" > $AGENT_HOME/.ssh/known_hosts
 	done
 done
 
