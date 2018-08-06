@@ -8,8 +8,8 @@
 require "yaml"
 
 KNOWN_REPOSITORY_PREFIXES = [
-  "git@bitbucket.org:panoramaed/",
-  "git@github.com:panorama-ed/"
+  "git@github.com:panorama-ed/",
+  "https://github.com/panorama-ed/"
 ].freeze
 
 
