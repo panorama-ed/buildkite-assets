@@ -19,10 +19,12 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ]
 
+puts KNOWN_REPOSITORY_PREFIXES
+
 unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
   ENV["BUILDKITE_REPO"].start_with?(prefix)
 end
-  puts "ack The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
+  puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
        "to this buildkite instance. If you actually need to use this repo " \
        "please modify the agent bootstrapping script to allow cloning it. "
 

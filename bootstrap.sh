@@ -5,7 +5,7 @@ set -eu
 sudo yum install -y ruby23
 
 ## Clone buildkite-assets
-git clone https://github.com/panorama-ed/buildkite-assets.git
+git clone https://github.com/panorama-ed/buildkite-assets.git#boop
 
 ## Go into the cloned repository directory
 cd buildkite-assets
