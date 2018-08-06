@@ -44,10 +44,6 @@ mkdir -p $AGENT_HOME/.ssh
 
 
 cat <<KNOWN_HOSTS > $AGENT_HOME/.ssh/known_hosts
-# The Bitbucket public key is taken from:
-# https://confluence.atlassian.com/bitbucket/troubleshoot-ssh-issues-271943403.html#TroubleshootSSHissues-Troubleshooterrormessages
-bitbucket.org,104.192.143.1 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
-
 # The GitHub public key is obtained by running `ssh -T git@github.com`,
 # confirming that the fingerprint matches GitHub's published fingerprint
 # (see: https://help.github.com/articles/github-s-ssh-key-fingerprints/),
