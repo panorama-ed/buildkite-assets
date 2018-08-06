@@ -19,7 +19,7 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ]
 
-puts KNOWN_REPOSITORY_PREFIXES
+puts KNOWN_REPOSITORY_PREFIXES.join(", ").to_s
 
 unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
   ENV["BUILDKITE_REPO"].start_with?(prefix)
