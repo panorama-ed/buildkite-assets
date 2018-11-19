@@ -6,7 +6,7 @@ The URL to the bootstrapping script is provided as a Cloudformation parameter
 when the buildkite stack is created. Agents will then pull and execute the
 script when they start.
 
-# Bootstraping features
+# Bootstrapping features
 
 1. **SSH Fingerprint verification** By default, when Buildkite checks out a git
    repository it automatically accept any SSH fingerprint without verifying its
