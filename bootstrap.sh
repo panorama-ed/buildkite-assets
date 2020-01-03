@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-## Make sure we'll use ruby 2.3
-sudo yum install -y ruby23
+## Make sure we'll use ruby 2.6
+amazon-linux-extras install -y ruby2.6
 
 ## Clone buildkite-assets
 git clone https://github.com/panorama-ed/buildkite-assets.git
@@ -22,7 +22,7 @@ cp -R deploy/* /usr/local/bin
 # the whole pipeline is aborted.
 #############################################################################
 cat <<EOF >> /etc/buildkite-agent/hooks/pre-command
-if ! ruby2.3 /etc/buildkite-agent/check_command_whitelist.rb; then
+if ! ruby /etc/buildkite-agent/check_command_whitelist.rb; then
   exit 1
 fi
 EOF
