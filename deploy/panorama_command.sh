@@ -31,8 +31,20 @@ docker build \
 command=""
 
 if [ $1 = "deploy" ]; then
-  echo "--- Deploying $DEPLOYMENT_APP_NAME"
-  command="git push heroku $BUILDKITE_COMMIT:master"
+  # This command checks to see if the origin of this repo has a `main` branch.
+  # If so, we want to  deploy that branch, otherwise, deploy `master`.
+  #
+  # TODO: This can be removed when all repos are using `main` as their primary
+  #       branch.
+  deploy_branch=""
+  if git ls-remote --exit-code --heads origin main > /dev/null; then
+    deploy_branch="main"
+  else
+    deploy_branch="master"
+  fi
+
+  echo "--- Deploying $DEPLOYMENT_APP_NAME to $deploy_branch"
+  command="git push heroku $BUILDKITE_COMMIT:$deploy_branch"
 elif [ $1 = "db_migrate" ]; then
   echo "--- Running DB Migration"
   command="heroku run --exit-code 'rake db:migrate' -a $DEPLOYMENT_APP_NAME"
