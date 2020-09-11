@@ -44,7 +44,7 @@ if [ $1 = "deploy" ]; then
   fi
 
   echo "--- Deploying $DEPLOYMENT_APP_NAME to $deploy_branch"
-  command="git push heroku $BUILDKITE_COMMIT:$deploy_branch"
+  command="git push heroku $BUILDKITE_COMMIT:refs/heads/$deploy_branch"
 elif [ $1 = "db_migrate" ]; then
   echo "--- Running DB Migration"
   command="heroku run --exit-code 'rake db:migrate' -a $DEPLOYMENT_APP_NAME"
