@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-## Make sure we'll use ruby 2.6
-amazon-linux-extras install -y ruby2.6
+## Make sure we'll use ruby 2.7.2
+amazon-linux-extras install -y ruby2.7.2
 
 ## Clone buildkite-assets
 git clone https://github.com/panorama-ed/buildkite-assets.git

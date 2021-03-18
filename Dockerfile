@@ -1,6 +1,8 @@
-FROM ruby:2.3
+FROM ruby:2.7.2
 
-RUN gem install bundler
+ARG BUNDLER_VERSION=1.17.3
+
+RUN gem install bundler --version "$BUNDLER_VERSION" --no-document
 
 COPY ./ ./
 
