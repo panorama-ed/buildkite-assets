@@ -31,17 +31,7 @@ docker build \
 command=""
 
 if [ $1 = "deploy" ]; then
-  # This command checks to see if the origin of this repo has a `main` branch.
-  # If so, we want to  deploy that branch, otherwise, deploy `master`.
-  #
-  # TODO: This can be removed when all repos are using `main` as their primary
-  #       branch.
-  deploy_branch=""
-  if git ls-remote --exit-code --heads origin main > /dev/null; then
-    deploy_branch="main"
-  else
-    deploy_branch="master"
-  fi
+  deploy_branch="main"
 
   echo "--- Deploying $DEPLOYMENT_APP_NAME to $deploy_branch"
   command="git push heroku $BUILDKITE_COMMIT:refs/heads/$deploy_branch"
