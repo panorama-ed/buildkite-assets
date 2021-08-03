@@ -7,7 +7,6 @@ require "tempfile"
 require "pathname"
 
 RSpec.describe "Pre-command Hook" do
-
   PROJECT_ROOT = Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath
   SCRIPT_UNDER_TEST = "#{PROJECT_ROOT}/check_command_whitelist.rb"
 
