@@ -36,7 +36,7 @@ pipeline_path = File.join(
   "pipeline.yml"
 )
 
-unless File.exists?(pipeline_path)
+unless File.exist?(pipeline_path)
   puts "The repository needs to have a 'buildkite/pipeline.yml' file " \
        "that specifies the commands allowed to run on the buildkite server!"
   exit 1
