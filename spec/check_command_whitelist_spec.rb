@@ -99,8 +99,8 @@ RSpec.describe "Pre-command Hook" do
       end
 
       context "and there are multiple commands from Buildkite" do
-        let(:command_1) { "echo Good Bye World!" }
-        let(:buildkite_command) { "#{command}\n#{command_1}" }
+        let(:command1) { "echo Good Bye World!" }
+        let(:buildkite_command) { "#{command}\n#{command1}" }
 
         it "fails if one command is not in the yaml file" do
           expect(subject[:status]).to eq(2), "Expected script to fail"
@@ -110,7 +110,7 @@ RSpec.describe "Pre-command Hook" do
         end
 
         context "and all are allowed" do
-          let(:command_1) do
+          let(:command1) do
             "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
           end
 
@@ -123,18 +123,18 @@ RSpec.describe "Pre-command Hook" do
     end
 
     context "with multiple commands in it" do
-      let(:command_1) { "echo Good Bye World!" }
+      let(:command1) { "echo Good Bye World!" }
       let(:pipeline_content) do
         <<~YAML
           steps:
             - command:
               - #{command}
-              - #{command_1}
+              - #{command1}
         YAML
       end
 
       it "passes with all commands in the pipeline.yml" do
-        [command, command_1].each do |cmd|
+        [command, command1].each do |cmd|
           status, output = execute_script(cmd)
           expect(status).to(
             eq(0),
@@ -144,7 +144,7 @@ RSpec.describe "Pre-command Hook" do
       end
 
       context "and Buildkite sends multiple commands" do
-        let(:buildkite_command) { "#{command}\n#{command_1}" }
+        let(:buildkite_command) { "#{command}\n#{command1}" }
 
         it "passes when all are in the yaml" do
           expect(subject[:status]).to(
@@ -154,8 +154,8 @@ RSpec.describe "Pre-command Hook" do
         end
 
         context "but one is not in the yaml" do
-          let(:command_2) { "echo Something else" }
-          let(:buildkite_command) { "#{command}\n#{command_2}" }
+          let(:command2) { "echo Something else" }
+          let(:buildkite_command) { "#{command}\n#{command2}" }
 
           it "fails with reasonable message" do
             expect(subject[:status]).to eq(2), "Expected script to fail"
