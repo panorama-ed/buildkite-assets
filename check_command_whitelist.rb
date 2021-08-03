@@ -18,7 +18,7 @@ KNOWN_REPOSITORY_PREFIXES = [
 # repositories
 DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
-]
+].freeze
 
 unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
   ENV["BUILDKITE_REPO"].start_with?(prefix)
