@@ -86,7 +86,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         end
       end
 
-      context "but the command is not in pipeline.yml" do
+      context "when the command is not in pipeline.yml" do
         let(:buildkite_command) { "echo Good Bye World!" }
 
         it "fails with a reasonable message" do
@@ -97,7 +97,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         end
       end
 
-      context "and there are multiple commands from Buildkite" do
+      context "when there are multiple commands from Buildkite" do
         let(:command1) { "echo Good Bye World!" }
         let(:buildkite_command) { "#{command}\n#{command1}" }
 
@@ -108,7 +108,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
           )
         end
 
-        context "and all are allowed" do
+        context "when all are allowed" do
           let(:command1) do
             "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
           end
@@ -142,7 +142,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         end
       end
 
-      context "and Buildkite sends multiple commands" do
+      context "when Buildkite sends multiple commands" do
         let(:buildkite_command) { "#{command}\n#{command1}" }
 
         it "passes when all are in the yaml" do
@@ -152,7 +152,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
           )
         end
 
-        context "but one is not in the yaml" do
+        context "when one is not in the yaml" do
           let(:command2) { "echo Something else" }
           let(:buildkite_command) { "#{command}\n#{command2}" }
 
@@ -166,7 +166,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
       end
     end
 
-    context "but yaml is malformed" do
+    context "when yaml is malformed" do
       let(:pipeline_content) do
         <<~YAML
           steps:
