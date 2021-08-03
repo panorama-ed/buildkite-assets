@@ -7,9 +7,6 @@ require "tempfile"
 require "pathname"
 
 RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
-  PROJECT_ROOT = Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath
-  SCRIPT_UNDER_TEST = "#{PROJECT_ROOT}/check_command_whitelist.rb"
-
   def execute_script(buildkite_command)
     environment = {
       "BUILDKITE_BUILD_CHECKOUT_PATH" => repo_path,
@@ -24,7 +21,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     Dir.chdir(repo_path) do
       output, err, status = Open3.capture3(
         environment,
-        "ruby #{SCRIPT_UNDER_TEST}"
+        "ruby #{script_under_test}"
       )
       exit_status = status.exitstatus
     end
@@ -45,6 +42,8 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
   let(:repo_path) { Dir.mktmpdir }
   let(:command) { "echo Hello World!" }
   let(:buildkite_command) { command }
+  let(:project_root) { Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath }
+  let(:script_under_test) { "#{project_root}/check_command_whitelist.rb" }
 
   context "when there's no pipeline.yml" do
     it "fails with message explaining why" do
