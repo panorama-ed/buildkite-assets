@@ -52,12 +52,12 @@ begin
                      uniq + DEFAULT_ALLOWED_COMMANDS
 
   ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
-    unless allowed_commands.include?(command)
-      puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-           "and therefore will not be run. Please add it to the whitelist if it " \
-           "should be allowed."
-      exit 2
-    end
+    next if allowed_commands.include?(command)
+
+    puts "The given command is not in the 'buildkite/pipeline.yml' file " \
+         "and therefore will not be run. Please add it to the whitelist if it " \
+         "should be allowed."
+    exit 2
   end
 
   exit 0
