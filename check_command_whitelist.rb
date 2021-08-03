@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###############################################################################
 # The purpose of this script is to ensure that:
 # 1) buildkite only clones from repositories coming from panoramaed org
