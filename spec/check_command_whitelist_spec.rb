@@ -6,7 +6,7 @@ require "rspec"
 require "tempfile"
 require "pathname"
 
-RSpec.describe "Pre-command Hook" do
+RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
   PROJECT_ROOT = Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath
   SCRIPT_UNDER_TEST = "#{PROJECT_ROOT}/check_command_whitelist.rb"
 
