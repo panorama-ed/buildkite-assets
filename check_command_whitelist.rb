@@ -14,7 +14,6 @@ KNOWN_REPOSITORY_PREFIXES = [
   "https://github.com/panorama-ed/"
 ].freeze
 
-
 # This command allows us to upload and process the pipeline file from our
 # repositories
 DEFAULT_ALLOWED_COMMANDS = [
