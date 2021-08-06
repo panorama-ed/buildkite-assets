@@ -1,0 +1,5 @@
+inherit_gem:
+  panolint: rubocop.yml
+
+Rails:
+  Enabled: false

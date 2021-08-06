@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ###############################################################################
 # The purpose of this script is to ensure that:
 # 1) buildkite only clones from repositories coming from panoramaed org
@@ -12,17 +14,16 @@ KNOWN_REPOSITORY_PREFIXES = [
   "https://github.com/panorama-ed/"
 ].freeze
 
-
 # This command allows us to upload and process the pipeline file from our
 # repositories
 DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
-]
+].freeze
 
 unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
   ENV["BUILDKITE_REPO"].start_with?(prefix)
 end
-  puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned " \
+  puts "The requested repository (#{ENV['BUILDKITE_REPO']}) cannot be cloned " \
        "to this buildkite instance. If you actually need to use this repo " \
        "please modify the agent bootstrapping script to allow cloning it. "
 
@@ -35,7 +36,7 @@ pipeline_path = File.join(
   "pipeline.yml"
 )
 
-unless File.exists?(pipeline_path)
+unless File.exist?(pipeline_path)
   puts "The repository needs to have a 'buildkite/pipeline.yml' file " \
        "that specifies the commands allowed to run on the buildkite server!"
   exit 1
@@ -51,12 +52,12 @@ begin
                      uniq + DEFAULT_ALLOWED_COMMANDS
 
   ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
-    unless allowed_commands.include?(command)
-      puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-           "and therefore will not be run. Please add it to the whitelist if it " \
-           "should be allowed."
-      exit 2
-    end
+    next if allowed_commands.include?(command)
+
+    puts "The given command is not in the 'buildkite/pipeline.yml' file " \
+         "and therefore will not be run. Please add it to the whitelist if it "\
+         "should be allowed."
+    exit 2
   end
 
   exit 0

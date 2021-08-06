@@ -1,14 +1,12 @@
+# frozen_string_literal: true
+
 require "fileutils"
 require "open3"
 require "rspec"
 require "tempfile"
 require "pathname"
 
-RSpec.describe "Pre-command Hook" do
-
-  PROJECT_ROOT = Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath
-  SCRIPT_UNDER_TEST = "#{PROJECT_ROOT}/check_command_whitelist.rb"
-
+RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
   def execute_script(buildkite_command)
     environment = {
       "BUILDKITE_BUILD_CHECKOUT_PATH" => repo_path,
@@ -23,7 +21,7 @@ RSpec.describe "Pre-command Hook" do
     Dir.chdir(repo_path) do
       output, err, status = Open3.capture3(
         environment,
-        "ruby #{SCRIPT_UNDER_TEST}"
+        "ruby #{script_under_test}"
       )
       exit_status = status.exitstatus
     end
@@ -44,6 +42,8 @@ RSpec.describe "Pre-command Hook" do
   let(:repo_path) { Dir.mktmpdir }
   let(:command) { "echo Hello World!" }
   let(:buildkite_command) { command }
+  let(:project_root) { Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath }
+  let(:script_under_test) { "#{project_root}/check_command_whitelist.rb" }
 
   context "when there's no pipeline.yml" do
     it "fails with message explaining why" do
@@ -85,7 +85,7 @@ RSpec.describe "Pre-command Hook" do
         end
       end
 
-      context "but the command is not in pipeline.yml" do
+      context "when the command is not in pipeline.yml" do
         let(:buildkite_command) { "echo Good Bye World!" }
 
         it "fails with a reasonable message" do
@@ -96,9 +96,9 @@ RSpec.describe "Pre-command Hook" do
         end
       end
 
-      context "and there are multiple commands from Buildkite" do
-        let(:command_1) { "echo Good Bye World!" }
-        let(:buildkite_command) { "#{command}\n#{command_1}" }
+      context "when there are multiple commands from Buildkite" do
+        let(:command1) { "echo Good Bye World!" }
+        let(:buildkite_command) { "#{command}\n#{command1}" }
 
         it "fails if one command is not in the yaml file" do
           expect(subject[:status]).to eq(2), "Expected script to fail"
@@ -107,8 +107,8 @@ RSpec.describe "Pre-command Hook" do
           )
         end
 
-        context "and all are allowed" do
-          let(:command_1) do
+        context "when all are allowed" do
+          let(:command1) do
             "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
           end
 
@@ -121,18 +121,18 @@ RSpec.describe "Pre-command Hook" do
     end
 
     context "with multiple commands in it" do
-      let(:command_1) { "echo Good Bye World!" }
+      let(:command1) { "echo Good Bye World!" }
       let(:pipeline_content) do
         <<~YAML
           steps:
             - command:
               - #{command}
-              - #{command_1}
+              - #{command1}
         YAML
       end
 
       it "passes with all commands in the pipeline.yml" do
-        [command, command_1].each do |cmd|
+        [command, command1].each do |cmd|
           status, output = execute_script(cmd)
           expect(status).to(
             eq(0),
@@ -141,8 +141,8 @@ RSpec.describe "Pre-command Hook" do
         end
       end
 
-      context "and Buildkite sends multiple commands" do
-        let(:buildkite_command) { "#{command}\n#{command_1}" }
+      context "when Buildkite sends multiple commands" do
+        let(:buildkite_command) { "#{command}\n#{command1}" }
 
         it "passes when all are in the yaml" do
           expect(subject[:status]).to(
@@ -151,9 +151,9 @@ RSpec.describe "Pre-command Hook" do
           )
         end
 
-        context "but one is not in the yaml" do
-          let(:command_2) { "echo Something else" }
-          let(:buildkite_command) { "#{command}\n#{command_2}" }
+        context "when one is not in the yaml" do
+          let(:command2) { "echo Something else" }
+          let(:buildkite_command) { "#{command}\n#{command2}" }
 
           it "fails with reasonable message" do
             expect(subject[:status]).to eq(2), "Expected script to fail"
@@ -165,7 +165,7 @@ RSpec.describe "Pre-command Hook" do
       end
     end
 
-    context "but yaml is malformed" do
+    context "when yaml is malformed" do
       let(:pipeline_content) do
         <<~YAML
           steps:
