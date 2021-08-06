@@ -22,7 +22,7 @@ GEM
       zeitwerk (~> 2.3)
     ast (2.4.2)
     brakeman (5.0.1)
-    childprocess (4.0.0)
+    childprocess (4.1.0)
     concurrent-ruby (1.1.8)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
