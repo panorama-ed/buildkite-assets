@@ -15,7 +15,7 @@ RUN curl https://cli-assets.heroku.com/install-standalone.sh | sh
 
 # Install AWS CLI. Secrets should be configured in the S3 bucket that Buildkite uses
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
+    && unzip -qq awscliv2.zip \
     && ./aws/install
 
 # Here, we take the UID for the user we will use in the docker image.
