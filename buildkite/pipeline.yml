@@ -1,5 +1,7 @@
 steps:
   - label: Test pre-command hook script
     command: ./buildkite/run_check_command_whitelist_tests.sh
+  - label: Test terraform
+    command: terraform -version
   - label: Test heroku-deploy Docker build
     command: ./buildkite/run_check_deploy_docker_build.sh
