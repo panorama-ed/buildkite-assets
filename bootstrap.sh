@@ -5,12 +5,11 @@ set -eu
 amazon-linux-extras install -y ruby2.6
 
 ## Install terraform
-yum install -y yum-utils
-yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-yum -y install terraform
-# RUN curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip" \
-#     && unzip terraform.zip \
-#     && mv terraform /usr/local/bin
+# yum install -y yum-utils
+# yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+# yum -y install terraform
+curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip" \
+sudo unzip ./terraform.zip –d /usr/local/bin
 
 ## Clone buildkite-assets
 git clone https://github.com/panorama-ed/buildkite-assets.git
