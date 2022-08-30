@@ -7,6 +7,7 @@ amazon-linux-extras install -y ruby2.6
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip" 
 sudo unzip ./terraform.zip -d /usr/local/bin
+sudo yum update
 
 ## Clone buildkite-assets
 git clone https://github.com/panorama-ed/buildkite-assets.git
