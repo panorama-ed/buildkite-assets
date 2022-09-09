@@ -50,9 +50,6 @@ docker run \
   -e DEPLOYMENT_APP_NAME \
   -e HEROKU_DEPLOYMENT_LOGIN \
   -e HEROKU_DEPLOYMENT_API_KEY \
-  -e AWS_ACCESS_KEY_ID \
-  -e AWS_SECRET_ACCESS_KEY \
-  -e AWS_DEFAULT_REGION \
   -e BUILDKITE_COMMIT \
   -v `pwd`:/home/panorama/app \
   -v /var/run/docker.sock:/var/run/docker.sock \
