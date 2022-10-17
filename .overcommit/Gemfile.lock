@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/panorama-ed/panolint.git
-  revision: 0e9b6d9f2d41c84c306cae5f33da53f58aa61678
+  revision: 4bd6039b426bf44fc3e0e241854d31540d1f482b
   branch: main
   specs:
-    panolint (0.1.5)
+    panolint (0.1.6)
       brakeman (>= 4.8, < 6.0)
       rubocop (>= 0.83, < 2.0)
       rubocop-performance (~> 1.5)
@@ -20,7 +20,7 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     ast (2.4.2)
-    brakeman (5.2.3)
+    brakeman (5.3.1)
     childprocess (4.1.0)
     concurrent-ruby (1.1.10)
     i18n (1.12.0)
