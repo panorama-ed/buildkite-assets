@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/panorama-ed/panolint.git
-  revision: 1433b445a9b874e1b9dfc39a15944e94b18cb81b
+  revision: bd66f8fb82cb4c8d04ff6b562f65dbef94823e65
   branch: main
   specs:
-    panolint (0.1.6)
+    panolint (0.1.7)
       brakeman (>= 4.8, < 6.0)
       rubocop (>= 0.83, < 2.0)
       rubocop-performance (~> 1.5)
