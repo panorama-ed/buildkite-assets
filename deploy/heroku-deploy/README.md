@@ -20,7 +20,7 @@ To use this image, just build it and run your deploy commands.
 docker build \
   --build-arg buildkite_agent_uid=$UID \
   -t heroku-deploy-img \
-  buildkite/heroku-deploy
+  deploy/heroku-deploy
 ```
 
 ## Run It :rocket:
