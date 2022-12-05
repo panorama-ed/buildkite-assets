@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-## Make sure we'll use ruby 2.6
-amazon-linux-extras install -y ruby2.6
+## Make sure we have Ruby 3 installed directly on the instance
+amazon-linux-extras install -y ruby3.0
 
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip" 

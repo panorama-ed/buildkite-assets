@@ -25,7 +25,7 @@ export HEROKU_DEPLOY_PATH=${HEROKU_DEPLOY_PATH:=/usr/local/bin/heroku-deploy}
 # Build docker image
 docker build \
   --build-arg buildkite_agent_uid=$UID \
-  -t heroku-deploy-img \
+  -t ${HEROKU_DEPLOY_IMAGE_NAME:=heroku-deploy-img} \
   $HEROKU_DEPLOY_PATH
 
 command=""
@@ -53,5 +53,5 @@ docker run \
   -e BUILDKITE_COMMIT \
   -v `pwd`:/home/panorama/app \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  -it heroku-deploy-img \
+  -it ${HEROKU_DEPLOY_IMAGE_NAME:=heroku-deploy-img} \
   $command
