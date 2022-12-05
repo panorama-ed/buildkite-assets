@@ -1,8 +1,8 @@
-FROM heroku/heroku:18
+FROM ruby:3.1.3
 
 # Install Docker client, which is used by Heroku CLI for container release
 # see installation instructions: https://docs.docker.com/install/linux/docker-ce/binaries/
-ENV DOCKERVERSION=18.03.1-ce
+ENV DOCKERVERSION=20.10.9
 RUN curl -fsSLO https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKERVERSION}.tgz \
   && mv docker-${DOCKERVERSION}.tgz docker.tgz \
   && tar xzvf docker.tgz \
@@ -23,7 +23,7 @@ RUN useradd -u $buildkite_agent_uid -m panorama
 
 # Make the platform API gem available to ruby scripts run inside the container.
 # Useful for scripting things like environment variable updates
-RUN gem install platform-api --no-rdoc --no-ri --version "2.1.0"
+RUN gem install platform-api --no-document
 
 WORKDIR /home/panorama
 
