@@ -4,6 +4,9 @@ set -eu
 ## Make sure we have Ruby 3 installed directly on the instance
 amazon-linux-extras install -y ruby3.0
 
+## Use Docker Buildkit instead of the legacy builder: https://docs.docker.com/build/buildkit/
+export DOCKER_BUILDKIT=1
+
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip" 
 sudo unzip ./terraform.zip -d /usr/local/bin
