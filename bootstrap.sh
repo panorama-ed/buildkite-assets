@@ -4,9 +4,6 @@ set -eu
 ## Make sure we have Ruby 3 installed directly on the instance
 amazon-linux-extras install -y ruby3.0
 
-## Use Docker Buildkit instead of the legacy builder: https://docs.docker.com/build/buildkit/
-export DOCKER_BUILDKIT=1
-
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.2.7/terraform_1.2.7_linux_amd64.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
@@ -32,6 +29,15 @@ cat <<EOF >> /etc/buildkite-agent/hooks/pre-command
 if ! ruby /etc/buildkite-agent/check_command_whitelist.rb; then
   exit 1
 fi
+EOF
+
+#############################################################################
+# Extend the pre-exit hook to cleanup docker containers and images so that
+# agents do not run out of disk space.
+#############################################################################
+cat <<EOF >> /etc/buildkite-agent/hooks/pre-exit
+docker container prune -f
+docker image prune -af
 EOF
 
 #############################################################################
