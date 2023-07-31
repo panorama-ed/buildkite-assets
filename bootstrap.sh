@@ -1,12 +1,11 @@
 #!/bin/bash
 set -eu
 
-KUBECTL_VERSION=v1.24.15
+KUBECTL_VERSION=v1.24.16
 HELM_VERSION=v3.12.2
 
 ## Make sure we have Ruby 3 installed directly on the instance
-#amazon-linux-extras install -y ruby3.0
-dnf install -y ruby
+yum install -y ruby
 
 # Install Kubectl and Helm CLIs
 wget -q https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
