@@ -7,6 +7,10 @@ HELM_VERSION=v3.12.2
 ## Make sure we have Ruby 3 installed directly on the instance
 yum install -y ruby
 
+## Install Terraform
+curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_amd64.zip" -o "terraform.zip"
+sudo unzip ./terraform.zip -d /usr/local/bin
+
 # Install Kubectl and Helm CLIs
 wget -q https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
 wget -q https://get.helm.sh/helm-$HELM_VERSION-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
