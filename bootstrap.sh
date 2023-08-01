@@ -4,8 +4,15 @@ set -eu
 KUBECTL_VERSION=v1.24.16
 HELM_VERSION=v3.12.2
 
-## Make sure we have Ruby 3 installed directly on the instance
-yum install -y ruby
+# Make sure we have Ruby 3 installed directly on the instance
+# on AL2 need to use `amazon-linux-extras` to install `ruby3.0`
+# AL2023 no longer has `amazon-linux-extras` so we use `dnf` to install ruby
+OS_VERSION=$(uname -a)
+if [[ $OS_VERSION =~ "amzn2023" ]]; then
+  dnf install -y ruby
+else
+  amazon-linux-extras install -y ruby3.0
+fi
 
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_amd64.zip" -o "terraform.zip"
