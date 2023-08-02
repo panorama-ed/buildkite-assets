@@ -5,17 +5,18 @@ KUBECTL_VERSION=v1.24.16
 HELM_VERSION=v3.12.2
 RUBY_INSTALL_VERSION=0.9.1
 
-wget https://github.com/postmodern/ruby-install/releases/download/v$RUBY_INSTALL_VERSION/ruby-install-$RUBY_INSTALL_VERSION.tar.gz
-tar -xzvf ruby-install-$RUBY_INSTALL_VERSION.tar.gz
-cd ruby-install-$RUBY_INSTALL_VERSION/
-sudo make install
+#wget https://github.com/postmodern/ruby-install/releases/download/v$RUBY_INSTALL_VERSION/ruby-install-$RUBY_INSTALL_VERSION.tar.gz
+#tar -xzvf ruby-install-$RUBY_INSTALL_VERSION.tar.gz
+#cd ruby-install-$RUBY_INSTALL_VERSION/
+#sudo make install
 
 # Make sure we have Ruby 3 installed directly on the instance
 # on AL2 need to use `amazon-linux-extras` to install `ruby3.0`
 # AL2023 no longer has `amazon-linux-extras` so we use `dnf` to install ruby
 OS_VERSION=$(uname -a)
 if [[ $OS_VERSION =~ "amzn2023" ]]; then
-  ruby-install --system ruby 3.1.2
+#  ruby-install --system ruby 3.1.2
+  dnf install -y ruby
 else
   amazon-linux-extras install -y ruby3.0
 fi
