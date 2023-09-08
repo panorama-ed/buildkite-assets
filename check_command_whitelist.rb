@@ -20,56 +20,60 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ].freeze
 
-unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
-  ENV["BUILDKITE_REPO"].start_with?(prefix)
-end
-  puts "The requested repository (#{ENV['BUILDKITE_REPO']}) cannot be cloned " \
-       "to this buildkite instance. If you actually need to use this repo " \
-       "please modify the agent bootstrapping script to allow cloning it. "
-
+unless KNOWN_REPOSITORY_PREFIXES.any? { |prefix| ENV["BUILDKITE_REPO"].start_with?(prefix) }
+  puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned "\
+       "to this buildkite instance. If you actually need to use this repo "\
+       "please modify the agent bootstrapping script to allow cloning it."
   exit 4
 end
 
-pipeline_path = File.join(
+# Search for pipeline files in root and subdirectories
+pipeline_paths = [File.join(
   ENV["BUILDKITE_BUILD_CHECKOUT_PATH"],
   "buildkite",
   "pipeline.yml"
-)
+)] + Dir.glob(File.join(
+  ENV["BUILDKITE_BUILD_CHECKOUT_PATH"],
+  "**",
+  "buildkite",
+  "pipeline.yml"
+))
 
-unless File.exist?(pipeline_path)
-  puts "The repository needs to have a 'buildkite/pipeline.yml' file " \
+unless pipeline_paths.any? { |path| File.exist?(path) }
+  puts "All projects in the repository must have a 'buildkite/pipeline.yml' file "\
        "that specifies the commands allowed to run on the buildkite server!"
   exit 1
 end
 
-yaml_content = File.read(pipeline_path)
-begin
-  pipeline = YAML.safe_load(yaml_content)
-  allowed_commands = pipeline["steps"].
-                     map { |step| step["command"] }.
-                     flatten.
-                     compact.
-                     uniq + DEFAULT_ALLOWED_COMMANDS
+allowed_commands = DEFAULT_ALLOWED_COMMANDS
 
-  ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
-    next if allowed_commands.include?(command)
-
-    puts "The given command is not in the 'buildkite/pipeline.yml' file " \
-         "and therefore will not be run. Please add it to the whitelist if it "\
-         "should be allowed."
-    exit 2
-  end
-
-  exit 0
-rescue Psych::SyntaxError => e
-  puts "Failed to parse #{pipeline_path}"
-  puts "Error message: #{e.message}"
-  puts "You have an error on line #{e.line}, this is your file:"
-  yaml_content.
-    split("\n").
-    each_with_index.
-    each do |line, line_number|
+pipeline_paths.each do |path|
+  yaml_content = File.read(path)
+  begin
+    pipeline = YAML.safe_load(yaml_content)
+    allowed_commands += pipeline["steps"].
+                        map { |step| step["command"] }.
+                        flatten.
+                        compact.
+                        uniq
+  rescue Psych::SyntaxError => e
+    puts "Failed to parse #{path}"
+    puts "Error message: #{e.message}"
+    puts "You have an error on line #{e.line}, this is your file:"
+    yaml_content.split("\n").each_with_index do |line, line_number|
       puts "#{line_number + 1}: #{line}"
     end
-  exit 3
+    exit 3
+  end
 end
+
+ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
+  next if allowed_commands.include?(command)
+
+  puts "The given command is not in any of the 'buildkite/pipeline.yml' files "\
+       "and therefore will not be run. Please add it to the whitelist if it "\
+       "should be allowed."
+  exit 2
+end
+
+exit 0

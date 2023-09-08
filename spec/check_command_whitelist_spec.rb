@@ -29,6 +29,13 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     [exit_status, output, err]
   end
 
+  def setup_pipeline_file(path, content)
+    FileUtils.mkdir_p(path)
+    File.open("#{path}/pipeline.yml", "w+") do |file|
+      file.write(content)
+    end
+  end
+
   subject do
     status, output, err = execute_script(buildkite_command)
     output = err if !err.nil? && !err.empty?
@@ -49,17 +56,15 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     it "fails with message explaining why" do
       expect(subject[:status]).to eq(1), "Expected script to fail"
       expect(subject[:output]).
-        to include("needs to have a 'buildkite/pipeline.yml'")
+        to include(
+          "All projects in the repository must have a 'buildkite/pipeline.yml'"
+        )
     end
   end
 
   context "when there's a pipeline.yml" do
     let!(:pipeline_file) do
-      FileUtils.mkdir_p("#{repo_path}/buildkite")
-      File.open("#{repo_path}/buildkite/pipeline.yml", "w+") do |file|
-        file.write(pipeline_content)
-      end
-      "#{repo_path}/buildkite/pipeline.yml"
+      setup_pipeline_file("#{repo_path}/buildkite", pipeline_content)
     end
 
     context "with one command in it" do
@@ -91,7 +96,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         it "fails with a reasonable message" do
           expect(subject[:status]).to eq(2), "Expected script to fail"
           expect(subject[:output]).to include(
-            "command is not in the 'buildkite/pipeline.yml'"
+            "command is not in any of the 'buildkite/pipeline.yml' files"
           )
         end
       end
@@ -103,7 +108,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         it "fails if one command is not in the yaml file" do
           expect(subject[:status]).to eq(2), "Expected script to fail"
           expect(subject[:output]).to include(
-            "command is not in the 'buildkite/pipeline.yml'"
+            "command is not in any of the 'buildkite/pipeline.yml' files"
           )
         end
 
@@ -158,7 +163,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
           it "fails with reasonable message" do
             expect(subject[:status]).to eq(2), "Expected script to fail"
             expect(subject[:output]).to include(
-              "command is not in the 'buildkite/pipeline.yml'"
+              "command is not in any of the 'buildkite/pipeline.yml' files"
             )
           end
         end
@@ -181,6 +186,40 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         )
 
         expect(subject[:output]).to include("Failed to parse")
+      end
+    end
+  end
+
+  context "when there are multiple pipeline files" do
+    let!(:root_pipeline_file) do
+      setup_pipeline_file("#{repo_path}/buildkite", root_pipeline_content)
+    end
+
+    let!(:subdir_pipeline_file) do
+      setup_pipeline_file("#{repo_path}/some_subdir/buildkite", subdir_pipeline_content)
+    end
+
+    let(:root_pipeline_content) do
+      <<~YAML
+        steps:
+          - command: #{root_command}
+      YAML
+    end
+
+    let(:subdir_pipeline_content) do
+      <<~YAML
+        steps:
+          - command: #{subdir_command}
+      YAML
+    end
+
+    let(:root_command) { "echo root command" }
+    let(:subdir_command) { "echo subdir command" }
+
+    it "passes for commands in any pipeline.yml" do
+      [root_command, subdir_command].each do |cmd|
+        status, output, _err = execute_script(cmd)
+        expect(status).to eq(0), "Command was: '#{cmd}'\nOutput was: \n#{output}"
       end
     end
   end
