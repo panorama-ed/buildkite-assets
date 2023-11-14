@@ -6,4 +6,5 @@ source "https://rubygems.org"
 
 gem "bundler"
 gem "overcommit"
-gem "panolint", github: "panorama-ed/panolint", branch: "main"
+gem "panolint-ruby", git: "https://github.com/panorama-ed/panolint-ruby.git",
+                     branch: "main"

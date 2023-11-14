@@ -20,8 +20,11 @@ DEFAULT_ALLOWED_COMMANDS = [
   "buildkite-agent pipeline upload ./buildkite/pipeline.yml"
 ].freeze
 
-unless KNOWN_REPOSITORY_PREFIXES.any? { |prefix| ENV["BUILDKITE_REPO"].start_with?(prefix) }
-  puts "The requested repository (#{ENV["BUILDKITE_REPO"]}) cannot be cloned "\
+unless KNOWN_REPOSITORY_PREFIXES.any? do |prefix|
+  ENV["BUILDKITE_REPO"].start_with?(prefix)
+end
+  puts "The requested repository (#{ENV.fetch('BUILDKITE_REPO',
+                                              nil)}) cannot be cloned "\
        "to this buildkite instance. If you actually need to use this repo "\
        "please modify the agent bootstrapping script to allow cloning it."
   exit 4
@@ -29,19 +32,20 @@ end
 
 # Search for pipeline files in root and subdirectories
 pipeline_paths = [File.join(
-  ENV["BUILDKITE_BUILD_CHECKOUT_PATH"],
+  ENV.fetch("BUILDKITE_BUILD_CHECKOUT_PATH", nil),
   "buildkite",
   "pipeline.yml"
 )] + Dir.glob(File.join(
-  ENV["BUILDKITE_BUILD_CHECKOUT_PATH"],
-  "**",
-  "buildkite",
-  "pipeline.yml"
-))
+                ENV.fetch("BUILDKITE_BUILD_CHECKOUT_PATH", nil),
+                "**",
+                "buildkite",
+                "pipeline.yml"
+              ))
 
 unless pipeline_paths.any? { |path| File.exist?(path) }
-  puts "All projects in the repository must have a 'buildkite/pipeline.yml' file "\
-       "that specifies the commands allowed to run on the buildkite server!"
+  puts "All projects in the repository must have a 'buildkite/pipeline.yml' "\
+       "file that specifies the commands allowed to run on the buildkite "\
+       "server!"
   exit 1
 end
 
