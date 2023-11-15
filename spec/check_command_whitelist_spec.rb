@@ -31,9 +31,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
 
   def setup_pipeline_file(path, content)
     FileUtils.mkdir_p(path)
-    File.open("#{path}/pipeline.yml", "w+") do |file|
-      file.write(content)
-    end
+    File.write("#{path}/pipeline.yml", content)
   end
 
   subject do
@@ -196,7 +194,8 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     end
 
     let!(:subdir_pipeline_file) do
-      setup_pipeline_file("#{repo_path}/some_subdir/buildkite", subdir_pipeline_content)
+      setup_pipeline_file("#{repo_path}/some_subdir/buildkite",
+                          subdir_pipeline_content)
     end
 
     let(:root_pipeline_content) do
@@ -219,7 +218,8 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     it "passes for commands in any pipeline.yml" do
       [root_command, subdir_command].each do |cmd|
         status, output, _err = execute_script(cmd)
-        expect(status).to eq(0), "Command was: '#{cmd}'\nOutput was: \n#{output}"
+        expect(status).to eq(0),
+                          "Command was: '#{cmd}'\nOutput was: \n#{output}"
       end
     end
   end

@@ -1,5 +1,3 @@
 inherit_gem:
-  panolint: rubocop.yml
-
-Rails:
-  Enabled: false
+  panolint-ruby: panolint-ruby-rubocop.yml
+  
