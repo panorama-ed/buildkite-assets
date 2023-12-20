@@ -32,9 +32,6 @@ cd buildkite-assets
 ## Copy the script to be used in pre-command
 cp check_command_whitelist.rb /etc/buildkite-agent
 
-## Copy deploy scripts
-cp -R deploy/* /usr/local/bin
-
 #############################################################################
 # Extend the pre-command hook to run the safety script before running any
 # commands on the buildkite instance. If the safety script fails, then
