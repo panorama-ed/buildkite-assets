@@ -1,8 +1,15 @@
 #!/bin/bash
 set -eu
 
-KUBECTL_VERSION=v1.24.16
-HELM_VERSION=v3.12.2
+KUBECTL_VERSION=v1.29.2
+HELM_VERSION=v3.14.2
+# Deploys could run on either `amd-small` or `arm-small` queues currently, so we need to install the correct version of the binaries
+ARCH=$(uname -m)
+if [[ $ARCH == "x86_64" ]]; then
+  ARCH="amd64"
+else
+  ARCH="arm64"
+fi
 
 # Make sure we have Ruby 3 installed directly on the instance
 # on AL2 need to use `amazon-linux-extras` to install `ruby3.0`
@@ -15,12 +22,12 @@ else
 fi
 
 ## Install Terraform
-curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_amd64.zip" -o "terraform.zip"
+curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
 
 # Install Kubectl and Helm CLIs
-wget -q https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
-wget -q https://get.helm.sh/helm-$HELM_VERSION-linux-amd64.tar.gz -O - | tar -xzO linux-amd64/helm > /usr/local/bin/helm
+wget -q https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/$ARCH/kubectl -O /usr/local/bin/kubectl
+wget -q https://get.helm.sh/helm-$HELM_VERSION-linux-$ARCH.tar.gz -O - | tar -xzO linux-$ARCH/helm > /usr/local/bin/helm
 chmod +x /usr/local/bin/helm /usr/local/bin/kubectl
 
 ## Clone buildkite-assets
