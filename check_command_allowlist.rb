@@ -54,7 +54,7 @@ allowed_commands = DEFAULT_ALLOWED_COMMANDS
 pipeline_paths.each do |path|
   yaml_content = File.read(path)
   begin
-    pipeline = YAML.safe_load(yaml_content)
+    pipeline = YAML.safe_load(yaml_content, aliases: true)
     allowed_commands += pipeline["steps"].
                         map { |step| step["command"] }.
                         flatten.

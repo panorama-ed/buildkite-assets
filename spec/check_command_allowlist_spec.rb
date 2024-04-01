@@ -29,7 +29,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
     [exit_status, output, err]
   end
 
-  def setup_pipeline_file(path, content)
+  def pipeline_file!(path, content)
     FileUtils.mkdir_p(path)
     File.write("#{path}/pipeline.yml", content)
   end
@@ -62,7 +62,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
 
   context "when there's a pipeline.yml" do
     let!(:pipeline_file) do
-      setup_pipeline_file("#{repo_path}/buildkite", pipeline_content)
+      pipeline_file!("#{repo_path}/buildkite", pipeline_content)
     end
 
     context "with one command in it" do
@@ -73,30 +73,48 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
         YAML
       end
 
-      it "passes if command is in the pipeline.yml" do
-        expect(subject[:status]).to eq(0), "Output was: \n#{subject[:output]}"
-      end
+      shared_examples "correct behavior" do
+        it "passes if command is in the pipeline.yml" do
+          expect(subject[:status]).to eq(0), "Output was: \n#{subject[:output]}"
+        end
 
-      context "when the repository is not allowed" do
-        let(:repo) { "git@github.com:somehwere_malicious/rainbow.git" }
+        context "when the repository is not allowed" do
+          let(:repo) { "git@github.com:somehwere_malicious/rainbow.git" }
 
-        it "fails with a reasonable message" do
-          expect(subject[:status]).to eq(4), "Expected script to fail"
-          expect(subject[:output]).to include(
-            "The requested repository (#{repo}) cannot be cloned"
-          )
+          it "fails with a reasonable message" do
+            expect(subject[:status]).to eq(4), "Expected script to fail"
+            expect(subject[:output]).to include(
+              "The requested repository (#{repo}) cannot be cloned"
+            )
+          end
+        end
+
+        context "when the command is not in pipeline.yml" do
+          let(:buildkite_command) { "echo Good Bye World!" }
+
+          it "fails with a reasonable message" do
+            expect(subject[:status]).to eq(2), "Expected script to fail"
+            expect(subject[:output]).to include(
+              "command is not in any of the 'buildkite/pipeline.yml' files"
+            )
+          end
         end
       end
 
-      context "when the command is not in pipeline.yml" do
-        let(:buildkite_command) { "echo Good Bye World!" }
+      it_behaves_like "correct behavior"
 
-        it "fails with a reasonable message" do
-          expect(subject[:status]).to eq(2), "Expected script to fail"
-          expect(subject[:output]).to include(
-            "command is not in any of the 'buildkite/pipeline.yml' files"
-          )
+      context "when YAML contains aliases" do
+        let(:pipeline_content) do
+          <<~YAML
+            steps:
+              - command: #{command}
+            something: &my_alias
+              is: interesting
+            something_else: *my_alias
+          YAML
         end
+
+        it_behaves_like "correct behavior"
       end
 
       context "when there are multiple commands from Buildkite" do
@@ -190,11 +208,11 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
 
   context "when there are multiple pipeline files" do
     let!(:root_pipeline_file) do
-      setup_pipeline_file("#{repo_path}/buildkite", root_pipeline_content)
+      pipeline_file!("#{repo_path}/buildkite", root_pipeline_content)
     end
 
     let!(:subdir_pipeline_file) do
-      setup_pipeline_file("#{repo_path}/some_subdir/buildkite",
+      pipeline_file!("#{repo_path}/some_subdir/buildkite",
                           subdir_pipeline_content)
     end
 
