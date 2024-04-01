@@ -48,7 +48,7 @@ RSpec.describe "Pre-command Hook" do # rubocop:disable RSpec/DescribeClass
   let(:command) { "echo Hello World!" }
   let(:buildkite_command) { command }
   let(:project_root) { Pathname.new("#{File.dirname(__FILE__)}/..").cleanpath }
-  let(:script_under_test) { "#{project_root}/check_command_whitelist.rb" }
+  let(:script_under_test) { "#{project_root}/check_command_allowlist.rb" }
 
   context "when there's no pipeline.yml" do
     it "fails with message explaining why" do

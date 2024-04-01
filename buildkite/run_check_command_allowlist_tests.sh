@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_IMAGE_NAME=check-command-whitelist
+DOCKER_IMAGE_NAME=check-command-allowlist
 
 echo "--- Running Tests"
 docker build -t $DOCKER_IMAGE_NAME .

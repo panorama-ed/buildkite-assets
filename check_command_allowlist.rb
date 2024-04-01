@@ -3,7 +3,7 @@
 ###############################################################################
 # The purpose of this script is to ensure that:
 # 1) buildkite only clones from repositories coming from panoramaed org
-# 2) buildkite can only run commands that have been white listed from within one
+# 2) buildkite can only run commands that have been allowlisted from within one
 #    of those repositories
 ###############################################################################
 
@@ -75,7 +75,7 @@ ENV["BUILDKITE_COMMAND"].split("\n").each do |command|
   next if allowed_commands.include?(command)
 
   puts "The given command is not in any of the 'buildkite/pipeline.yml' files "\
-       "and therefore will not be run. Please add it to the whitelist if it "\
+       "and therefore will not be run. Please add it to the allowlist if it "\
        "should be allowed."
   exit 2
 end

@@ -37,7 +37,7 @@ git clone https://github.com/panorama-ed/buildkite-assets.git
 cd buildkite-assets
 
 ## Copy the script to be used in pre-command
-cp check_command_whitelist.rb /etc/buildkite-agent
+cp check_command_allowlist.rb /etc/buildkite-agent
 
 #############################################################################
 # Extend the pre-command hook to run the safety script before running any
@@ -45,7 +45,7 @@ cp check_command_whitelist.rb /etc/buildkite-agent
 # the whole pipeline is aborted.
 #############################################################################
 cat <<EOF >> /etc/buildkite-agent/hooks/pre-command
-if ! ruby /etc/buildkite-agent/check_command_whitelist.rb; then
+if ! ruby /etc/buildkite-agent/check_command_allowlist.rb; then
   exit 1
 fi
 EOF
