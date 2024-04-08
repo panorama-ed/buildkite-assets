@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/panorama-ed/panolint-ruby.git
-  revision: 9703bed63319533fd2dcca8c42c23027b62659ae
+  revision: e7e17928d5c5421abfe10a9dc8b61e8380b131f4
   branch: main
   specs:
     panolint-ruby (0)
       rubocop (= 1.62.1)
       rubocop-performance (= 1.20.2)
-      rubocop-rspec (= 2.28.0)
+      rubocop-rspec (= 2.29.1)
 
 GEM
   remote: https://rubygems.org/
@@ -48,7 +48,7 @@ GEM
     rubocop-performance (1.20.2)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.30.0, < 2.0)
-    rubocop-rspec (2.28.0)
+    rubocop-rspec (2.29.1)
       rubocop (~> 1.40)
       rubocop-capybara (~> 2.17)
       rubocop-factory_bot (~> 2.22)
