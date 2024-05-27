@@ -1,10 +1,10 @@
 GIT
   remote: https://github.com/panorama-ed/panolint-ruby.git
-  revision: 9a985ea40292e48b9a277378afaf2f08a7c63845
+  revision: bfd7fff908c688b76106c810d34f6384b4eefe61
   branch: main
   specs:
     panolint-ruby (0)
-      rubocop (= 1.63.5)
+      rubocop (= 1.64.0)
       rubocop-performance (= 1.20.2)
       rubocop-rspec (= 2.29.2)
 
@@ -24,12 +24,12 @@ GEM
     parser (3.3.1.0)
       ast (~> 2.4.1)
       racc
-    racc (1.7.3)
+    racc (1.8.0)
     rainbow (3.1.1)
     regexp_parser (2.9.2)
     rexml (3.2.8)
       strscan (>= 3.0.9)
-    rubocop (1.63.5)
+    rubocop (1.64.0)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
