@@ -21,6 +21,9 @@ else
   amazon-linux-extras install -y ruby3.0
 fi
 
+## Install Ansible
+pip install ansible
+
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
