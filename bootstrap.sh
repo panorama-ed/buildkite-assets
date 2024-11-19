@@ -24,6 +24,9 @@ fi
 ## Install Ansible
 pip install ansible
 
+## Install Boto3
+pip install boto3
+
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
