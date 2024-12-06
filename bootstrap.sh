@@ -27,6 +27,9 @@ pip install ansible
 ## Install Boto3
 pip install boto3
 
+## Install Ruby SDK for AWS Directory Data API Services
+gem install aws-sdk-directoryservicedata
+
 ## Install Terraform
 curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
