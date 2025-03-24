@@ -1,12 +1,12 @@
 GIT
   remote: https://github.com/panorama-ed/panolint-ruby.git
-  revision: 3ff83ed56cfc7537b3865160d77108d90fb7ef7a
+  revision: d19a2a048fcd61e5bdbaed5c1ebf4641fef79a9c
   branch: main
   specs:
     panolint-ruby (0)
       rubocop (= 1.72.1)
       rubocop-performance (= 1.21.1)
-      rubocop-rspec (= 3.0.3)
+      rubocop-rspec (= 3.5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -47,8 +47,9 @@ GEM
     rubocop-performance (1.21.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
-    rubocop-rspec (3.0.3)
-      rubocop (~> 1.61)
+    rubocop-rspec (3.5.0)
+      lint_roller (~> 1.1)
+      rubocop (~> 1.72, >= 1.72.1)
     ruby-progressbar (1.13.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
