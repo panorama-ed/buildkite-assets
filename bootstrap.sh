@@ -31,6 +31,11 @@ pip install boto3
 curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
 sudo unzip ./terraform.zip -d /usr/local/bin
 
+## Install OpenTofu 1.6.2
+curl -sL "https://github.com/opentofu/opentofu/releases/download/v1.6.2/tofu_1.6.2_linux_${ARCH}.zip" -o "tofu.zip"
+sudo unzip -o ./tofu.zip -d /usr/local/bin
+rm -f ./tofu.zip
+
 # Install Kubectl and Helm CLIs
 wget -q https://dl.k8s.io/release/$KUBECTL_VERSION/bin/linux/$ARCH/kubectl -O /usr/local/bin/kubectl
 wget -q https://get.helm.sh/helm-$HELM_VERSION-linux-$ARCH.tar.gz -O - | tar -xzO linux-$ARCH/helm > /usr/local/bin/helm
