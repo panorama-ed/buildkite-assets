@@ -99,3 +99,24 @@ KNOWN_HOSTS
 
 chown buildkite-agent: $AGENT_HOME/.ssh
 chown buildkite-agent: $AGENT_HOME/.ssh/known_hosts
+
+#############################################################################
+# CVE-2026-31431 mitigation. Block userspace from auto-loading algif_aead
+# (the `install ... /bin/false` line is required because request_module()
+# bypasses `blacklist` on its own). Any failure here is logged and the
+# bootstrap continues — `if`/`||` keep failures out of `set -eu`'s reach.
+#############################################################################
+if cat > /etc/modprobe.d/disable-algif-aead.conf <<'MOD'
+install algif_aead /bin/false
+blacklist algif_aead
+MOD
+then
+  modprobe -r algif_aead 2>/dev/null || true
+  if [ -d /sys/module/algif_aead ]; then
+    echo "algif_aead mitigation PARTIAL on $(hostname): module still loaded"
+  else
+    echo "algif_aead mitigation applied on $(hostname)"
+  fi
+else
+  echo "algif_aead mitigation failed on $(hostname): could not write modprobe.d config; continuing bootstrap"
+fi
