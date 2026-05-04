@@ -11,10 +11,22 @@ else
   ARCH="arm64"
 fi
 
+# Detect the OS once; reused by the update step and the Ruby install below.
+OS_VERSION=$(uname -a)
+
+# Refresh package metadata and upgrade installed packages so subsequent
+# installs pull the latest versions and security patches. On yum/dnf-based
+# distros `update` performs both the metadata refresh and the upgrade in
+# a single command (no separate `update` + `upgrade` pair like apt).
+if [[ $OS_VERSION =~ "amzn2023" ]]; then
+  dnf update -y --security
+else
+  yum update -y --security
+fi
+
 # Make sure we have Ruby 3 installed directly on the instance
 # on AL2 need to use `amazon-linux-extras` to install `ruby3.0`
 # AL2023 no longer has `amazon-linux-extras` so we use `dnf` to install ruby
-OS_VERSION=$(uname -a)
 if [[ $OS_VERSION =~ "amzn2023" ]]; then
   dnf install -y ruby
 else
@@ -26,10 +38,6 @@ pip install ansible
 
 ## Install Boto3
 pip install boto3
-
-## Install Terraform
-curl "https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_linux_${ARCH}.zip" -o "terraform.zip"
-sudo unzip ./terraform.zip -d /usr/local/bin
 
 ## Install OpenTofu 1.6.2
 curl -sL "https://github.com/opentofu/opentofu/releases/download/v1.6.2/tofu_1.6.2_linux_${ARCH}.zip" -o "tofu.zip"
