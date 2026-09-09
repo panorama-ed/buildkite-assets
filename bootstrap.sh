@@ -39,8 +39,8 @@ pip install ansible
 ## Install Boto3
 pip install boto3
 
-## Install OpenTofu 1.6.2
-curl -sL "https://github.com/opentofu/opentofu/releases/download/v1.6.2/tofu_1.6.2_linux_${ARCH}.zip" -o "tofu.zip"
+## Install OpenTofu
+curl -sL "https://github.com/opentofu/opentofu/releases/download/v1.12.4/tofu_1.12.4_linux_${ARCH}.zip" -o "tofu.zip"
 sudo unzip -o ./tofu.zip -d /usr/local/bin
 rm -f ./tofu.zip
 
