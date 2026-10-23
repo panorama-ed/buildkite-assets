@@ -39,6 +39,16 @@ pip install ansible
 ## Install Boto3
 pip install boto3
 
+#############################################################################
+# eMudhra CA compromise (CVE-2026-111943) mitigation. Without certifi,
+# botocore falls back to its own bundled cacert.pem, so roots that the
+# Elastic CI Stack AMI blocklists are still trusted by boto3/Ansible and by
+# the RPM-installed AWS CLI at /usr/bin/aws. The distro python3-certifi
+# package points certifi.where() at the system bundle, so botocore follows
+# the system blocklist.
+#############################################################################
+dnf install -y python3-certifi
+
 ## Install OpenTofu
 curl -sL "https://github.com/opentofu/opentofu/releases/download/v1.12.4/tofu_1.12.4_linux_${ARCH}.zip" -o "tofu.zip"
 sudo unzip -o ./tofu.zip -d /usr/local/bin
