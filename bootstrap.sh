@@ -90,10 +90,13 @@ EOF
 
 #############################################################################
 # Require SSH fingerprint verification to prevent MITM attacks (e.g. someone
-# pretending to be github)
+# pretending to be github). This makes checkouts use
+# StrictHostKeyChecking=yes against the known_hosts file written below.
+# Agent v4 silently ignores the old `no-automatic-ssh-fingerprint-verification`
+# name and would fall back to StrictHostKeyChecking=accept-new.
 #############################################################################
 cat <<EOF >> /etc/buildkite-agent/buildkite-agent.cfg
-no-automatic-ssh-fingerprint-verification=true
+no-ssh-keyscan=true
 EOF
 
 #############################################################################
