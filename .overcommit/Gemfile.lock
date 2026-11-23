@@ -33,7 +33,7 @@ GEM
       iniparse (~> 1.4)
       rexml (>= 3.4.2)
     parallel (1.28.0)
-    parser (3.3.13.0)
+    parser (3.3.14.0)
       ast (~> 2.4.1)
       racc
     prism (2.1.0)
